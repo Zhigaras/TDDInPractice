@@ -21,7 +21,7 @@ interface Validation {
         )
         
         init {
-            if (conditionsList.all { it.isParamValid() }.not())
+            if (conditionsList.any { it.isParamValid().not() })
                 throw java.lang.IllegalStateException()
         }
         
