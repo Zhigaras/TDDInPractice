@@ -7,6 +7,7 @@ interface Sorting {
     class Base(private val forOut: For, private val forIn: For) : Sorting {
         
         override fun sort(list: List<Int>): List<Int> {
+            if (list.size < 2) return list
             val sortedList = list.toMutableList()
             forOut.repeat(sortedList.size) {
                 var changesCount = 0
