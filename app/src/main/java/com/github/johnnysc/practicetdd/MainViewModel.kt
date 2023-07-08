@@ -17,7 +17,7 @@ class MainViewModel(
     override fun change(filter: GoodFilter) {
         filters.find { it == filter }?.change()
         filterCommunication.map(filters)
-        products.filter { it.map(Good.Mapper.Base(filters.filter { it.isChosen() })) }
+        products.filter { it.map(Good.Base(filters.filter { it.isChosen() })) }
             .let { communication.map(it) }
     }
 }

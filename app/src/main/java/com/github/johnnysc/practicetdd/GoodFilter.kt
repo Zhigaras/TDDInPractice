@@ -1,14 +1,6 @@
 package com.github.johnnysc.practicetdd
 
-interface GoodFilter {
-    
-    fun map(
-        ram: Int,
-        os: OS,
-        displaySize: Double,
-        processor: ProcessorType,
-        price: Double
-    ): Boolean
+interface GoodFilter : Good.Mapper<Boolean>{
     
     fun change()
     

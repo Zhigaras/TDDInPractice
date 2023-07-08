@@ -13,16 +13,17 @@ interface Good {
             processor: ProcessorType,
             price: Double
         ): T
-        
-        class Base(private val filter: List<GoodFilter>) : Mapper<Boolean> {
-            
-            override fun map(
-                ram: Int,
-                os: OS,
-                displaySize: Double,
-                processor: ProcessorType,
-                price: Double
-            ) = filter.all { it.map(ram, os, displaySize, processor, price) }
-        }
     }
+    
+    class Base(private val filters: List<GoodFilter>) : Mapper<Boolean> {
+        
+        override fun map(
+            ram: Int,
+            os: OS,
+            displaySize: Double,
+            processor: ProcessorType,
+            price: Double
+        ) = filters.all { it.map(ram, os, displaySize, processor, price) }
+    }
+    
 }
