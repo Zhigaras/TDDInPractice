@@ -20,15 +20,18 @@ interface LotteryTicket {
     
     class Base(private val number: Int) : LotteryTicket {
         
+        private val numberLength = number.toString().length
+        
         override fun isFake(): Boolean {
-            return number < 10 || number > 9999_9999 || number.toString().length % 2 != 0
+            return number < 10 || number > 9999_9999 || numberLength % 2 != 0
         }
         
         override fun isWinner(): Boolean {
             val stringNumber = number.toString()
-            val leftPart = stringNumber.dropLast(stringNumber.length / 2)
-            val rightPart = stringNumber.drop(stringNumber.length / 2)
-            val list = listOf(leftPart, rightPart).map { str ->
+            val list = listOf(
+                stringNumber.dropLast(numberLength / 2),
+                stringNumber.drop(numberLength / 2)
+            ).map { str ->
                 str.map { char -> char.digitToInt() }.sum()
             }
             return list.first() == list.last()
