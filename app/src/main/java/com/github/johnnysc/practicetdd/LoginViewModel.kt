@@ -21,8 +21,7 @@ class LoginViewModel(
             val result = if (isEmailValid) {
                 if (isPasswordValid) {
                     val weatherItem: WeatherUiModel = interactor.login().map(mapper)
-                    if (weatherItem.isError) LoginState.Error(weatherItem)
-                    else LoginState.Success(weatherItem)
+                    weatherItem.map()
                 } else {
                     LoginState.PasswordError(validatePassword.errorMessage())
                 }
