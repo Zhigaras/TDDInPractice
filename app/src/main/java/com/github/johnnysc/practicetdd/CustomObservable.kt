@@ -1,14 +1,12 @@
 package com.github.johnnysc.practicetdd
 
-interface CustomObservable<T, R : CustomObserver<T>> {
+interface CustomObservable<T : Any, R : CustomObserver<T>> : Update<T> {
     
     fun addObserver(observer: R)
     
-    fun update(argument: T)
-    
     fun removeObserver(observer: R)
     
-    class Base<T, R : CustomObserver<T>> : CustomObservable<T, R> {
+    class Base<T : Any, R : CustomObserver<T>> : CustomObservable<T, R> {
         
         private val observers = mutableListOf<R>()
         
@@ -26,8 +24,9 @@ interface CustomObservable<T, R : CustomObserver<T>> {
     }
 }
 
-interface CustomObserver<T> {
+interface CustomObserver<T : Any> : Update<T>
+
+interface Update<T : Any> {
     
     fun update(argument: T)
-
 }
