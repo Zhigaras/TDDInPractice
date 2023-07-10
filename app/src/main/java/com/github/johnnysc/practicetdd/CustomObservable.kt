@@ -1,10 +1,12 @@
 package com.github.johnnysc.practicetdd
 
-interface CustomObservable<T : Any, R : CustomObserver<T>> : Update<T> {
+interface CustomObservable<T : CustomObject, R : CustomObserver<T>> : Update<T> {
     
     fun addObserver(observer: R)
     
-    class Base<T : Any, R : CustomObserver<T>> : CustomObservable<T, R> {
+    class Base<T : CustomObject, R : CustomObserver<T>>(
+        private val segregateContent: SegregateContent<T, R> = SegregateContent.Base()
+    ) : CustomObservable<T, R> {
         
         private val observersList = mutableListOf<R>()
         
@@ -13,22 +15,18 @@ interface CustomObservable<T : Any, R : CustomObserver<T>> : Update<T> {
         }
         
         override fun update(obj: T) {
-            if (obj is CustomObject.Premium) {
-                observersList
-                    .filterIsInstance<CustomObserver.Premium<T>>()
-                    .forEach { it.update(obj) }
-            } else {
-                observersList.forEach { it.update(obj) }
+            observersList.forEach {
+                if (segregateContent.isAllowed(obj, it)) it.update(obj)
             }
         }
     }
 }
 
-interface CustomObserver<T : Any> : Update<T> {
+interface CustomObserver<T : CustomObject> : Update<T> {
     
-    abstract class Usual<T : Any> : CustomObserver<T>
+    abstract class Usual<T : CustomObject> : CustomObserver<T>
     
-    abstract class Premium<T : Any> : CustomObserver<T>
+    abstract class Premium<T : CustomObject> : CustomObserver<T>
 }
 
 interface CustomObject {
@@ -38,7 +36,22 @@ interface CustomObject {
     abstract class Usual : CustomObject
 }
 
-interface Update<T : Any> {
+interface Update<T : CustomObject> {
     
     fun update(obj: T)
+}
+
+interface SegregateContent<T : CustomObject, R : CustomObserver<T>> {
+    
+    fun isAllowed(obj: T, observer: R): Boolean
+    
+    class Base<T : CustomObject, R : CustomObserver<T>> : SegregateContent<T, R> {
+        
+        override fun isAllowed(obj: T, observer: R): Boolean {
+            return if (obj is CustomObject.Usual) true
+            else {
+                observer is CustomObserver.Premium<*>
+            }
+        }
+    }
 }
