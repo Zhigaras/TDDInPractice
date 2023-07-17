@@ -2,9 +2,6 @@ package com.github.johnnysc.practicetdd
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import io.reactivex.Scheduler
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
