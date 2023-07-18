@@ -14,7 +14,7 @@ interface FeatureChain {
     
     object Empty : Handle {
         override suspend fun handle(message: String): MessageUI {
-            return MessageUI.Empty
+            return MessageUI.Empty()
         }
     }
 }
